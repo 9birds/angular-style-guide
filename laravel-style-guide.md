@@ -36,7 +36,7 @@ app
 ├── Jobs - 任务队列
 ├── Listeners - 监听器（对应 Events 及 Jobs（Queue））
 ├── Models - 所有 Eloquent Model
-├── Repositories - 所有封裝的 业务Models
+├── Repositories - 所有封装的 业务Models
 └── Providers - 框架的 Service Provider
 ```
 ### 其他
@@ -131,4 +131,124 @@ public function store(Request $request)
 
 ### 命名相关
 #### 数据库表和字段
-- 資料表名稱請使用**複數英文**並使用**蛇底式命名法（snake_case）**
+- 数据库表名称请使用 **复数英文** 并使用 **蛇底式命名法（snake_case）**
+
+```php
+// bad
+Schema::create('User', ...
+Schema::create('user', ...
+
+// good
+Schema::create('users', ...
+```
+
+- 多对多（或同性质）的 pivot table 请命名为`{单数表A}_{单数表B}`，并按照 **英文字母順序排序**
+
+```php
+// bad
+Schema::create('articles_tags', ...
+Schema::create('article_tag_mapping', ...
+Schema::create('tag_article', ...
+
+// good
+Scheam::create('article_tag', ...
+```
+
+- 数据库字段请使用 **蛇底式命名法（snake_case）** 且一律 **不加前綴字**
+
+```php
+//bad
+$table->string('Name');
+$table->string('u_name');
+
+// good
+$table->string('name');
+```
+
+- Primary Key 一律为 `id`
+
+```php
+// bad
+$table->increment('uid');
+$table->increment('pId');
+$table->increment('p_id');
+
+// good
+$table->increment('id');
+```
+
+- Foreign Key 一律为`{单数表名称}_id`
+
+```php
+// bad
+$table->integer('UserId');
+$table->integer('userId');
+
+// good
+$table->integer('user_id');
+```
+
+#### 类和方法
+- 所有类名称请使用 **帕斯卡命名法（PascalCase）**
+
+```php
+// bad
+class Articles_Repository {...}
+class articlesRepository {...}
+
+// good
+class ArticlesRepository {...}
+```
+
+- 所有的 Resources Controller 名称为 **复数**
+
+```php
+// bad
+class ArticleController extends Controller {...}
+
+// good
+class ArticlesController extends Controller {...}
+```
+
+- 所有 Eloquent Model 名称为 **单数**
+
+```php
+// bad
+class Users extends Model {...}
+
+// good
+class User extends Model {...}
+```
+
+- 所有方法名称请使用 **驼峰式命名法（camelCase）**
+
+```php
+// bad
+public function CreateArticle {...}
+public function create_article {...}
+
+//good
+public function createArticle {...}
+```
+
+#### 变量
+- 所有 PHP 变量名称请使用 **驼峰式命名法（camelCase）**
+
+```php
+// bad
+$request_data;
+$Request_Data;
+
+//good
+$requestData;
+```
+
+- 所有 HTTP 传递的参数名称请使用 **蛇底式命名法（snake_case）**
+
+```php
+// bad
+{!! Form::text('addressSwitch') !!}
+
+//good
+{!! Form::text('address_switch') !!}
+```
